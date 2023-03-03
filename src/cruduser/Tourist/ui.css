@@ -1,0 +1,33 @@
+/*
+ * Empty Stylesheet file.
+ */
+.side_bar{
+    -fx-background-color: #D5D6F2;
+    
+}
+
+.childpan{
+    -fx-background-color: #F9FB8FD;
+}
+
+.searchicon{
+   -fx-border-color: #D5D6F2;
+   -fx-border-width: 0px 0px 2px;
+}
+
+.noti-icon{
+    -fx-background-color: red;
+    -fx-background-radius: 100%;
+}
+
+.txtfld{
+    -fx-background-radius:20px; 
+   
+   
+}
+
+.txt_fld{
+     -fx-background-radius:20px; 
+    -fx-background-color: blue;
+    -fx-background-fills: white;
+}
