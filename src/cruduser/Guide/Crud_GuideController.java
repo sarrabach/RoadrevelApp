@@ -49,13 +49,11 @@ public class Crud_GuideController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
-    @FXML
     private void addguide(ActionEvent event) {
      Util.loadWindow(getClass().getResource("/cruduser/Guide/AddGuide/Add.fxml"), "Add New Place", null);
 
     }
 
-    @FXML
     private void shguide(ActionEvent event) {
              Util.loadWindow(getClass().getResource("/cruduser/Guide/GuideList/Guide_list.fxml"), "Add New Place", null);
 

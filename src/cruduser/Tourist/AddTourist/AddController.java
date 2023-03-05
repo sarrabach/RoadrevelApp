@@ -19,6 +19,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
+import org.mindrot.jbcrypt.BCrypt;
+
 
 /**
  * FXML Controller class
@@ -171,6 +173,7 @@ public class AddController implements Initializable {
             handleEditOperation();
             return;
         }
+        Pass=BCrypt.hashpw(Pass, BCrypt.gensalt());
         Tourist pv = new Tourist(Fname, lname, uname, email, Pass, tpho, Role, natio, langue);
 
         sg.ajouter(pv);

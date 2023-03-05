@@ -70,6 +70,11 @@ public class Guide extends User{
         this.lang2 = langue2;
         this.lang3 = langue3;
     }
+
+    public Guide(int Id_User, String cityname) {
+        super(Id_User);
+       this.cityname = cityname;
+    }
    
     
 

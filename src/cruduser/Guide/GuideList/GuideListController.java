@@ -4,10 +4,12 @@
  */
 package cruduser.Guide.GuideList;
 
+import com.jfoenix.controls.JFXTextField;
 import cruduser.Guide.AddGuide.AddController;
 import cruduser.database.DatabaseHandler;
 import cruduser.entities.Guide.Guide;
 import cruduser.entities.Guide.ServiceGuide;
+import cruduser.entities.User.ServiceUser;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -16,8 +18,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -72,14 +78,72 @@ public class GuideListController implements Initializable {
     private TableColumn<Guide, String> langCol2;
     @FXML
     private TableColumn<Guide, String> langCol3;
+    @FXML
+    private JFXTextField rech;
 
     /**
      * Initializes the controller class.
      */
+     private final ObservableList<Guide> dataList = FXCollections.observableArrayList();
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        loadData();
-        initCol();
+        try {
+            loadData();
+            initCol();
+            
+            ServiceUser sc=new ServiceUser();
+            ObservableList<Guide> list;
+   
+            FilteredList<Guide> filteredData = new FilteredList<>(dataList, b -> true);
+            rech.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredData.setPredicate(guide -> {
+                    
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+                    
+                    
+                    String lowerCaseFilter = newValue.toLowerCase();
+                    
+                    String t=""+guide.getUser_FirstName();
+                    if(t.toLowerCase().indexOf(lowerCaseFilter) != -1)
+                    {
+                        return true;
+                    }
+                    else if (guide.getUser_LastName().toLowerCase().indexOf(lowerCaseFilter) != -1 ) {
+                        return true; // Filter matches first name.
+                    } else if (guide.getUser_mail().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                        return true; // Filter matches last name.
+                    }
+                    else if (guide.getLang1().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                        return true; // Filter matches last name.
+                    }
+                    else if (guide.getLang2().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                        return true; // Filter matches last name.
+                    }
+                    else
+                        return false; // Does not match.
+                });
+            });
+            SortedList<Guide> sortedData = new SortedList<>(filteredData);
+            sortedData.comparatorProperty().bind(tableView.comparatorProperty());
+            dataList.addAll(sc.afficherAllGuides());
+            System.out.println(dataList);
+            fnameCol.setCellValueFactory(new PropertyValueFactory<>("User_FirstName"));
+            lanameCol.setCellValueFactory(new PropertyValueFactory<>("User_LastName"));
+            mailCol.setCellValueFactory(new PropertyValueFactory<>("User_mail"));
+            phoneCol.setCellValueFactory(new PropertyValueFactory<>("User_phone"));
+            unameCol.setCellValueFactory(new PropertyValueFactory<>("Username"));
+            pwdCol.setCellValueFactory(new PropertyValueFactory<>("Password"));
+            langCol.setCellValueFactory(new PropertyValueFactory<>("lang1"));
+            langCol2.setCellValueFactory(new PropertyValueFactory<>("lang2"));
+            langCol3.setCellValueFactory(new PropertyValueFactory<>("lang3"));
+            cnameCol.setCellValueFactory(new PropertyValueFactory<>("cityname"));
+            tableView.setItems(sortedData); 
+        } catch (SQLException ex) {
+            Logger.getLogger(GuideListController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void initCol() {

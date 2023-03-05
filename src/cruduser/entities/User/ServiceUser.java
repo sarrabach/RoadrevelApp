@@ -2,12 +2,17 @@
 package cruduser.entities.User;
 
 import cruduser.database.DatabaseHandler;
+import cruduser.entities.Guide.Guide;
 import cruduser.entities.IService;
+import cruduser.entities.Tourist.Tourist;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import static java.util.Collections.list;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,10 +53,11 @@ public class ServiceUser implements IService<User>{
             pst.setInt(4, p.getUser_phone());
             pst.setString(5, p.getUsername());
             pst.setString(6, p.getPassword());
+            pst.setInt(7, p.getId_User());
             pst.executeUpdate();
             System.out.println("User modifiée !");
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("Modifier error"+ex.getMessage());
         }
     }
 
@@ -87,7 +93,7 @@ public class ServiceUser implements IService<User>{
         return list;
     }
 
-    public boolean validate(String Uname , String Upassword) {
+    public User validate(String Uname , String Upassword) {
          
         String vd = "SELECT * FROM user WHERE Username= ? and Password= ?";
         try {
@@ -95,13 +101,168 @@ public class ServiceUser implements IService<User>{
             pst.setString(1,Uname);
             pst.setString(2, Upassword);
             ResultSet resultSet = pst.executeQuery();
+            User user=new User();
             if (resultSet.next()) {
-                return true;
+                user.setId_User(resultSet.getInt("id_User"));
+                user.setUsername(resultSet.getString("Username"));
+                user.setUser_mail(resultSet.getString("User_mail"));
+                user.setUser_phone(resultSet.getInt("User_phone"));
+                user.setRole(resultSet.getString("role"));
+                return user;
             }
         } catch (SQLException ex) {
-            System.err.println(ex.getMessage());;
+            System.out.println(ex.getMessage()+" Eroor Validation");
         }
-        return false ;
+        return null ;
     }
+    public User existe(String username)
+    {
+        String vd = "SELECT * FROM user WHERE Username= ? ";
+        try {
+        PreparedStatement pst = cnx.prepareStatement(vd);
+            pst.setString(1,username);
+            ResultSet resultSet = pst.executeQuery();
+            User user;
+            if (resultSet.next()) {         
+               user=new User(resultSet.getInt("id_User"), resultSet.getString("User_FirstName"), resultSet.getString("User_lastName"),resultSet.getString("User_mail"), resultSet.getInt("User_phone"), resultSet.getString("Username"), resultSet.getString("Password"),resultSet.getString("role"));
+               return user;
+            }
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage()+" Eroor Validation");
+        }
+        return null;
+    }
+    public List<User> stat_Users() throws SQLException {
+    List<User> arr=new ArrayList();
+        Statement stm = cnx.createStatement();
+        String req="select count(*) nb ,role from user group by role";
+        ResultSet r=stm.executeQuery(req);
+        
+        while (r.next()) {
+            User c = new User(r.getInt("nb")
+                    , r.getString("role"));
+            arr.add(c);
+        }
+        
+        return arr;
+   }
+    
+    public int nbUsers() throws SQLException
+    {
+        Statement stm = cnx.createStatement();
+        String req="select count(*) nb from user";
+        ResultSet r=stm.executeQuery(req);
+        while(r.next())
+        {
+        return r.getInt("nb");
+        }     
+        return 0;
+    }
+    
+    public List<Guide> guideCountOnCity() throws SQLException
+    {
+        List<Guide> arr=new ArrayList();
+        Statement stm = cnx.createStatement();
+        String req="select count(*) nb ,Cityname from user where role='Tourist' group by Cityname";
+        ResultSet r=stm.executeQuery(req);
+        
+        while (r.next()) {
+            Guide c = new Guide(r.getInt("nb")
+                    , r.getString("Cityname"));
+            arr.add(c);
+        }
+        
+        return arr;
+    }
+    
+    public List<Guide> reportByType() throws SQLException
+    {
+        List<Guide> arr=new ArrayList();
+        Statement stm = cnx.createStatement();
+        String req="select count(*) nb ,Incident_type from reports group by Incident_type";
+        ResultSet r=stm.executeQuery(req);
+        
+        while (r.next()) {
+           Guide c = new Guide(r.getInt("nb")
+                    , r.getString("Incident_type"));
+            arr.add(c);
+        }
+        
+        return arr;
+    }
+    
+    public List<Guide> afficherAllGuides() throws SQLException
+    {
+        String req = "SELECT * FROM user where role='Guide' ";
+        List<Guide> list=new ArrayList<>();
+        PreparedStatement pst;
+   
+            pst = cnx.prepareStatement(req);
+            ResultSet result = pst.executeQuery();
+            while (result.next()) {
+                Guide g = new Guide(result.getInt("id_User"), result.getString("User_FirstName"), result.getString("User_lastName"), result.getString("User_mail"), result.getInt("User_phone"), result.getString("Username"), result.getString("Password"), result.getString("Lang1"), result.getString("Lang2"), result.getString("Lang3"), result.getString("CityName"));
+                System.out.println(g);
+                list.add(g);
+            }
+
+
+        return list;
+    }
+    
+    
+        public List<User> findGuides(String cityname,Date dateBeg ,Date dateEnd) throws SQLException
+    {
+         String vd = "SELECT id_User FROM user WHERE Cityname=? and dateBeg<=? and dateEnd>=? and disponibility=1 and role='Guide'";
+         List<User> userListId=new ArrayList<>();
+        try {
+        PreparedStatement pst = cnx.prepareStatement(vd);
+            pst.setString(1,cityname);
+            pst.setDate(2, (java.sql.Date) dateBeg);
+            pst.setDate(3, (java.sql.Date) dateEnd);
+            ResultSet resultSet = pst.executeQuery();
+            User user=new User();
+            if (resultSet.next()) {
+                user.setId_User(resultSet.getInt("id_User"));
+                userListId.add(user);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage()+" Eroor Validation");
+        }
+        return userListId ;
+    }
+    
+    public List<User> findTourist() throws SQLException
+    {
+         String vd = "SELECT * FROM user WHERE disponibility=1 and role='Tourist'";
+         List<User> userListId=new ArrayList<>();
+        try {
+        PreparedStatement pst = cnx.prepareStatement(vd);
+            ResultSet resultSet = pst.executeQuery();
+           User user=new User();
+            if (resultSet.next()) {
+                user.setId_User(resultSet.getInt("id_User"));
+                user.setCityname(resultSet.getString("Cityname"));
+                user.setDateBegin(resultSet.getDate("dateBeg"));
+                user.setDateEnd(resultSet.getDate("dateEnd"));             
+                userListId.add(user);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage()+" Eroor Validation");
+        }
+        return userListId ;
+    }    
+        
+    public boolean autoMatch(int iduser,int idrelation ) throws SQLException
+    {
+        String req = "UPDATE  user SET id_relation=? WHERE id_User=?";
+            PreparedStatement pst = cnx.prepareStatement(req);
+            pst.setInt(1,idrelation);
+            pst.setInt(2,iduser);
+            pst.executeUpdate();
+            System.out.println("User modifiée !");
+            return true;
+    }
+    
 }
 

@@ -29,6 +29,15 @@ public class CrudAController implements Initializable {
     private JFXButton Aadmin;
     @FXML
     private JFXButton Sadmin;
+    
+    @FXML
+    private JFXButton Login;
+
+    @FXML
+    private JFXButton Aadmin1;
+
+    @FXML
+    private JFXButton Sadmin1;
 
     /**
      * Initializes the controller class.
@@ -48,6 +57,21 @@ public class CrudAController implements Initializable {
     private void shadmins(ActionEvent event) {
              Util.loadWindow(getClass().getResource("/cruduser/Tourist/TouristList/tourist_list.fxml"), "Add New Place", null);
 
+    }
+    
+    @FXML
+    void shguide(ActionEvent event) {
+                     Util.loadWindow(getClass().getResource("/cruduser/Guide/GuideList/Guide_list.fxml"), "Add New Place", null);
+    }
+
+    @FXML
+    private void addguide(ActionEvent event) {
+             Util.loadWindow(getClass().getResource("/cruduser/Guide/AddGuide/Add.fxml"), "Add New Place", null);
+    }
+
+    @FXML
+    private void Login(ActionEvent event) {
+            Util.loadWindow(getClass().getResource("/Login/login.fxml"), "Login", null);
     }
     
 }

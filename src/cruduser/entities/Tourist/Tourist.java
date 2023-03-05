@@ -6,6 +6,7 @@ package cruduser.entities.Tourist;
 
 
 import cruduser.entities.User.User;
+import java.util.Date;
 import java.util.Objects;
 
 
@@ -15,48 +16,74 @@ import java.util.Objects;
  */
 public class Tourist extends User{
     
-   private String nationality;
+    private String nationality;
     private String langue; 
 
+
+     
     public Tourist(int Id_User) {
         super(Id_User);
     }
-
-    public Tourist( String User_FirstName, String User_LastName, String User_mail, int User_phone, String Username, String Password,String nationality, String langue) {
-        super(User_FirstName, User_LastName, User_mail, User_phone, Username, Password);
+    
+ 
+    public Tourist(int Id_User, String role,String nationality, String langue) {
+        super(Id_User, role);
         this.nationality = nationality;
         this.langue = langue;
     }
 
-    public Tourist( String User_FirstName, String User_LastName, String User_mail, String Username, String Password, int User_phone, String role,String nationality, String langue) {
-        super(User_FirstName, User_LastName, User_mail, User_phone, Username, Password, role);
-        this.nationality = nationality;
-        this.langue = langue;
-    }
-
-    public Tourist( int Id_User, String User_FirstName, String User_LastName, String User_mail, int User_phone, String Username, String Password,String nationality, String langue) {
-        super(Id_User, User_FirstName, User_LastName, User_mail, User_phone, Username, Password);
-        this.nationality = nationality;
-        this.langue = langue;
-    }
-
-    public Tourist( int Id_User, String User_FirstName, String User_LastName, String User_mail, int User_phone, String Username, String Password, String role,String nationality, String langue) {
+    public Tourist(int Id_User, String User_FirstName, String User_LastName, String User_mail, int User_phone, String Username, String Password, String role,String nationality, String langue) {
         super(Id_User, User_FirstName, User_LastName, User_mail, User_phone, Username, Password, role);
         this.nationality = nationality;
         this.langue = langue;
     }
 
-   
+    public Tourist(int Id_User, String User_FirstName, String User_LastName, String User_mail, int User_phone, String Username, String Password,String nationality, String langue) {
+        super(Id_User, User_FirstName, User_LastName, User_mail, User_phone, Username, Password);
+        this.nationality = nationality;
+        this.langue = langue;
+    }
 
-    
-    
-     
+    public Tourist(int Id_User,String nationality, String langue) {
+        super(Id_User);
+        this.nationality = nationality;
+        this.langue = langue;
+    }
 
-   
+    public Tourist(String nationality, String langue, String User_FirstName, String User_LastName, String User_mail, int User_phone, String Username, String Password) {
+        super(User_FirstName, User_LastName, User_mail, User_phone, Username, Password);
+        this.nationality = nationality;
+        this.langue = langue;
+    }
+
+
+
+    public Tourist(int Id_User, String cityname, Date dateBegin, Date dateEnd,String nationality, String langue) {
+        super(Id_User, cityname, dateBegin, dateEnd);
+        this.nationality = nationality;
+        this.langue = langue;
+    }
+
+    public Tourist(int Id_User, Date dateBegin, Date dateEnd, Boolean disponibility,String nationality, String langue) {
+        super(Id_User, dateBegin, dateEnd, disponibility);
+        this.nationality = nationality;
+        this.langue = langue;
+    }
+
+
+    public Tourist(String User_FirstName, String User_LastName, String User_mail, int User_phone, String Username, String Password,String nationality, String langue) {
+        super(User_FirstName, User_LastName, User_mail, User_phone, Username, Password);
+        this.nationality = nationality;
+        this.langue = langue;
+    }
+
+    public Tourist(String User_FirstName, String User_LastName, String User_mail, String Username, String Password, int User_phone, String role,String nationality, String langue) {
+        super(User_FirstName, User_LastName, User_mail, User_phone, Username, Password, role);
+        this.nationality = nationality;
+        this.langue = langue;
+    }
 
   
-   
-
     public String getNationality() {
         return nationality;
     }
@@ -73,6 +100,7 @@ public class Tourist extends User{
         this.langue = langue;
     }
 
+    @Override
     public int hashCode() {
         int hash = 7;
         hash = 11 * hash + Objects.hashCode(this.nationality);
@@ -80,6 +108,7 @@ public class Tourist extends User{
         return hash;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -99,23 +128,10 @@ public class Tourist extends User{
 
     
 
+    @Override
     public String toString() {
         return "Tourist{" + "nationality=" + nationality + ", langue=" + langue + '}';
     }
 
-
-    
-  
-
-    
-   
-
-    
-   
-   
-
-   
-
-    
     
 }

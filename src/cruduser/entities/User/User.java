@@ -1,6 +1,7 @@
 
 package cruduser.entities.User;
 
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -15,7 +16,75 @@ public class User {
     private int User_phone ;
     private String Username ;
     private String Password ;
-     private String role ;
+    private String role ;
+    private String cityname;
+    private Date dateBegin;
+    private Date dateEnd;
+    private Boolean disponibility;
+
+    public String getCityname() {
+        return cityname;
+    }
+
+    public void setCityname(String cityname) {
+        this.cityname = cityname;
+    }
+
+    public User(int Id_User, Date dateBegin, Date dateEnd, Boolean disponibility) {
+        this.Id_User = Id_User;
+        this.dateBegin = dateBegin;
+        this.dateEnd = dateEnd;
+        this.disponibility = disponibility;
+    }
+
+    public User(int Id_User, String cityname, Date dateBegin, Date dateEnd) {
+        this.Id_User = Id_User;
+        this.cityname = cityname;
+        this.dateBegin = dateBegin;
+        this.dateEnd = dateEnd;
+    }
+
+    public Date getDateBegin() {
+        return dateBegin;
+    }
+
+    public void setDateBegin(Date dateBegin) {
+        this.dateBegin = dateBegin;
+    }
+
+    public Date getDateEnd() {
+        return dateEnd;
+    }
+
+    public void setDateEnd(Date dateEnd) {
+        this.dateEnd = dateEnd;
+    }
+
+    public Boolean getDisponibility() {
+        return disponibility;
+    }
+
+    public void setDisponibility(Boolean disponibility) {
+        this.disponibility = disponibility;
+    }
+
+    
+    
+    
+    public User(int Id_User, String User_FirstName, String User_LastName, String User_mail, int User_phone, String Username, String Password, String role, Date dateBegin, Date dateEnd, Boolean disponibility) {
+        this.Id_User = Id_User;
+        this.User_FirstName = User_FirstName;
+        this.User_LastName = User_LastName;
+        this.User_mail = User_mail;
+        this.User_phone = User_phone;
+        this.Username = Username;
+        this.Password = Password;
+        this.role = role;
+        this.dateBegin = dateBegin;
+        this.dateEnd = dateEnd;
+        this.disponibility = disponibility;
+    }
+    
 
     public User(String User_FirstName, String User_LastName, String User_mail, int User_phone, String Username, String Password) {
         this.User_FirstName = User_FirstName;
@@ -62,6 +131,15 @@ public class User {
         this.Password = Password;
         this.role = role;
     }
+
+    User() {
+    }
+
+    public User(int Id_User,String role) {
+        this.Id_User = Id_User;
+        this.role=role;
+    }
+
 
     public int getId_User() {
         return Id_User;
