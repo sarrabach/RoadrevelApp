@@ -110,7 +110,6 @@
                   <Image url="@icons8-search-50.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="46.0" fitWidth="64.0" layoutX="205.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true" />
             <TabPane layoutX="36.0" layoutY="151.0" prefHeight="380.0" prefWidth="627.0" tabClosingPolicy="UNAVAILABLE">
                <tabs>
                   <Tab text="Untitled Tab 1">

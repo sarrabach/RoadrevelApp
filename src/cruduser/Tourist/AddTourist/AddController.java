@@ -62,6 +62,8 @@ public class AddController implements Initializable {
     @FXML
     private JFXButton Cancel;
     private int idtourist;
+    @FXML
+    private JFXTextField cname;
 
     /**
      * Initializes the controller class.

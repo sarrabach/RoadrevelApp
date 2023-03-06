@@ -5,12 +5,18 @@
 package Login;
 
 import com.jfoenix.controls.JFXTextField;
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.rest.autopilot.v1.assistant.Task;
 import cruduser.entities.User.ServiceUser;
 import cruduser.entities.User.User;
 import cruduser.util.Util;
+import java.net.URI;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,18 +54,25 @@ public class LoginController implements Initializable {
     /**
      * Initializes the controller class.
      */
+    public static final String ACCOUNT_SID = "ACbcc7f8d34a41d899234eaee96ba4df31";
+    public static final String AUTH_TOKEN = "622adcf13aa54bd8f813bd16af9606c4";
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         try {
-            error_password.setText("");
+
+            // String sendList[] = jTextFieldTo.getText().split(",")
             ServiceUser su=new ServiceUser();
             List<User> touristList=su.findTourist();
             for(User u:touristList)
             {
+           
                 List<User> guideList=su.findGuides(u.getCityname(),u.getDateBegin(),u.getDateEnd());
-                if(guideList.size()!=0)
+                if(!guideList.isEmpty())
                 {
-                su.autoMatch(u.getId_User(),guideList.get(0).getId_User());
+                    
+                    su.autoMatch(u.getId_User(),guideList.get(0).getId_User());
+                    createTask();
                 }
             }
         } catch (SQLException ex) {
@@ -155,6 +168,21 @@ public class LoginController implements Initializable {
         }
     }
 
-
+protected Task createTask()
+{
+    
+Thread th = new Thread(() -> {
+    Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+                   String messageBody = "Guide number :";
+                    String to = "+21654494381";
+                    Message message =Message.creator(
+                    new com.twilio.type.PhoneNumber(to),                //Recipient(s)
+                    new com.twilio.type.PhoneNumber("+15674093244"),    //Sender Phone No. - Find your Twilio phone number at https://www.twilio.com/console
+                    messageBody)
+                    .setMediaUrl(										//MMS, Comment out this and the next line if you don't want to attach picture to your message.
+                            Arrays.asList(URI.create("http://oracleprofessor.com/LO.jpg")))	//MMS
+                    .create();});
+return null;
+}
 
 }
