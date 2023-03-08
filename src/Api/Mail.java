@@ -19,8 +19,8 @@ import javax.mail.internet.MimeMessage;
  */
 public class Mail {
 
-    private String username = "apptourismroadrevel@gmail.com";
-    private String password = "dgacdcwtplnoezkf";
+    private String username = "roadreveltour@gmail.com";
+    private String password = "piuttjpzivkhmvbw";
    
 public void envoyerCode(String code,String to) {
 // Etape 1 : CrÃ©ation de la session
@@ -43,7 +43,7 @@ props.setProperty("mail.host", "smtp.gmail.com");
         try {
         // Etape 2 : CrÃ©ation de l'objet Message
             Message message = new MimeMessage(session);
-        message.setFrom(new InternetAddress("apptourismroadrevel@gmail.com"));
+        message.setFrom(new InternetAddress("roadreveltour@gmail.com"));
         message.setRecipients(Message.RecipientType.TO,
         InternetAddress.parse(to));
         message.setSubject("Password reset");

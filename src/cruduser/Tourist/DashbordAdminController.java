@@ -89,7 +89,7 @@ public class DashbordAdminController implements Initializable {
     {
         pie.getData().add(new PieChart.Data(su.guideCountOnCity().get(j).getCityname(),su.guideCountOnCity().get(j).getId_User()));
     }
-    pie.setTitle("Statistiques sur les Quide par Cityname ");        
+    pie.setTitle("Statistiques sur les Touristes par Cityname ");        
     
         int nb2=su.reportByType().size();
     for(int K=0;K<nb2;K++)
