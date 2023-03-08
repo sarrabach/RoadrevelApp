@@ -44,7 +44,8 @@ public class ServiceUser implements IService<User>{
 
     @Override
     public void modifier(User p) {
-        String req = "UPDATE  user SET User_FirstName=?, User_lastName= ? ,User_mail= ? ,User_phone=?,Username= ?, Password= ? WHERE id_User=?";
+        String req = "UPDATE  user SET User_FirstName=?, User_lastName= ? ,User_mail= ? ,User_phone=?,Username= ?, Password= ? ,Cityname=? ,dateBeg=?,dateEnd=? WHERE id_User=?";
+        System.out.println("modifier user");
         try {
             PreparedStatement pst = cnx.prepareStatement(req);
             pst.setString(1, p.getUser_FirstName());
@@ -53,9 +54,12 @@ public class ServiceUser implements IService<User>{
             pst.setInt(4, p.getUser_phone());
             pst.setString(5, p.getUsername());
             pst.setString(6, p.getPassword());
-            pst.setInt(7, p.getId_User());
+            pst.setString(7,p.getCityname1());
+            pst.setDate(8, (java.sql.Date) p.getDateBegin());
+            pst.setDate(9, (java.sql.Date) p.getDateEnd());
+            pst.setInt(10, p.getId_User());
             pst.executeUpdate();
-            System.out.println("User modifiée !");
+            System.out.println("User modifiée !"+req);
         } catch (SQLException ex) {
             System.out.println("Modifier error"+ex.getMessage());
         }
@@ -74,6 +78,25 @@ public class ServiceUser implements IService<User>{
         }
     }
 
+    
+       public void modifier1(User p) {
+        String req = "UPDATE  user SET Cityname=? ,dateBeg=?,dateEnd=? WHERE id_User=?";
+        System.out.println("modifier user");
+        try {
+            PreparedStatement pst = cnx.prepareStatement(req);
+            pst.setString(1,p.getCityname1());
+            pst.setString(2,p.getDateBegin().toString());
+            pst.setString(3, p.getDateEnd().toString());
+            pst.setInt(4, p.getId_User());
+            pst.executeUpdate();
+            System.out.println("User modifiée !"+req);
+        } catch (SQLException ex) {
+            System.out.println("Modifier error"+ex.getMessage());
+        }
+    }
+
+   
+    
     @Override
     public List<User> afficher() {
         List<User> list = new ArrayList<>();
@@ -91,6 +114,26 @@ public class ServiceUser implements IService<User>{
         }
         
         return list;
+    }
+    
+     public User afficherUser(int id)  { 
+        try {
+         User us = null;
+
+        String req = "SELECT * FROM user where id_User=? ";
+  
+            PreparedStatement pst = cnx.prepareStatement(req);
+            pst.setInt(1,id);
+            ResultSet result = pst.executeQuery();
+            
+            while(result.next()) {
+                us= new User(result.getInt("id_User"), result.getString("User_FirstName"), result.getString("User_lastName"),result.getString("User_mail"), result.getInt("User_phone"), result.getString("Username"), result.getString("Password"));
+            }
+                    } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        return null;
     }
 
     public User validate(String Uname , String Upassword) {
@@ -213,7 +256,7 @@ public class ServiceUser implements IService<User>{
     
         public List<User> findGuides(String cityname,Date dateBeg ,Date dateEnd) throws SQLException
     {
-         String vd = "SELECT id_User FROM user WHERE Cityname=? and dateBeg<=? and dateEnd>=? and disponibility=1 and role='Guide'";
+         String vd = "SELECT * FROM user WHERE Cityname=? and dateBeg<=? and dateEnd>=? and disponibility=1 and role='Guide'";
          List<User> userListId=new ArrayList<>();
         try {
         PreparedStatement pst = cnx.prepareStatement(vd);
@@ -224,6 +267,10 @@ public class ServiceUser implements IService<User>{
             User user=new User();
             if (resultSet.next()) {
                 user.setId_User(resultSet.getInt("id_User"));
+                user.setUser_FirstName(resultSet.getString("User_FirstName"));
+                user.setUser_LastName(resultSet.getString("User_LastName"));
+                user.setUser_phone(resultSet.getInt("User_phone"));
+                user.setUser_mail("User_mail");
                 userListId.add(user);
             }
         } catch (SQLException ex) {
@@ -240,9 +287,9 @@ public class ServiceUser implements IService<User>{
         PreparedStatement pst = cnx.prepareStatement(vd);
             ResultSet resultSet = pst.executeQuery();
            User user=new User();
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 user.setId_User(resultSet.getInt("id_User"));
-                user.setCityname(resultSet.getString("Cityname"));
+                user.setCityname1(resultSet.getString("Cityname"));
                 user.setDateBegin(resultSet.getDate("dateBeg"));
                 user.setDateEnd(resultSet.getDate("dateEnd"));             
                 userListId.add(user);

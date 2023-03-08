@@ -17,17 +17,38 @@ public class User {
     private String Username ;
     private String Password ;
     private String role ;
-    private String cityname;
+    private String cityname1;
     private Date dateBegin;
     private Date dateEnd;
     private Boolean disponibility;
 
-    public String getCityname() {
-        return cityname;
+    public User() {
     }
 
-    public void setCityname(String cityname) {
-        this.cityname = cityname;
+    
+    
+    
+    public String getCityname1() {
+        return cityname1;
+    }
+
+    public void setCityname1(String cityname) {
+        this.cityname1 = cityname;
+    }
+
+    public User(int Id_User, String User_FirstName, String User_LastName, String User_mail, int User_phone, String Username, String Password, String role, String cityname1, Date dateBegin, Date dateEnd, Boolean disponibility) {
+        this.Id_User = Id_User;
+        this.User_FirstName = User_FirstName;
+        this.User_LastName = User_LastName;
+        this.User_mail = User_mail;
+        this.User_phone = User_phone;
+        this.Username = Username;
+        this.Password = Password;
+        this.role = role;
+        this.cityname1 = cityname1;
+        this.dateBegin = dateBegin;
+        this.dateEnd = dateEnd;
+        this.disponibility = disponibility;
     }
 
     public User(int Id_User, Date dateBegin, Date dateEnd, Boolean disponibility) {
@@ -37,9 +58,9 @@ public class User {
         this.disponibility = disponibility;
     }
 
-    public User(int Id_User, String cityname, Date dateBegin, Date dateEnd) {
+    public User(int Id_User, String cityname1, Date dateBegin, Date dateEnd) {
         this.Id_User = Id_User;
-        this.cityname = cityname;
+        this.cityname1 = cityname1;
         this.dateBegin = dateBegin;
         this.dateEnd = dateEnd;
     }
@@ -132,8 +153,6 @@ public class User {
         this.role = role;
     }
 
-    User() {
-    }
 
     public User(int Id_User,String role) {
         this.Id_User = Id_User;
@@ -260,5 +279,6 @@ public class User {
         return "User{" + "Id_User=" + Id_User + ", User_FirstName=" + User_FirstName + ", User_LastName=" + User_LastName + ", User_mail=" + User_mail + ", User_phone=" + User_phone + ", Username=" + Username + ", Password=" + Password + ", role=" + role + '}';
     }
 
+  
    
 }

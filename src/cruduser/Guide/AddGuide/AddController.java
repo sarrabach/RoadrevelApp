@@ -23,6 +23,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  * FXML Controller class
@@ -133,7 +134,7 @@ public class AddController implements Initializable {
             AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Insufficient Data", "Please enter your Last Name.");
             return;
         }
-        if (email.isEmpty()) {
+        if (email.isEmpty() || !email.contains("@") || !email.contains(".")) {
             AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Insufficient Data", "Please enter your Mail.");
             return;
         }
@@ -191,6 +192,7 @@ public class AddController implements Initializable {
             handleEditOperation();
             return;
         }
+        Pass=BCrypt.hashpw(Pass, BCrypt.gensalt());
         Guide pv = new Guide(Fname, lname, uname, email, Pass, tpho, Role, cityname, langue1, langue2, langue3);
 
         sg.ajouter(pv);

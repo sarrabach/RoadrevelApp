@@ -7,16 +7,15 @@ package Login;
 import com.jfoenix.controls.JFXTextField;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
-import com.twilio.rest.autopilot.v1.assistant.Task;
+import com.twilio.rest.taskrouter.v1.workspace.Task;
+import com.twilio.type.PhoneNumber;
 import cruduser.entities.User.ServiceUser;
 import cruduser.entities.User.User;
+import cruduser.util.SessionManager;
 import cruduser.util.Util;
-import java.net.URI;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +24,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -54,34 +52,13 @@ public class LoginController implements Initializable {
     /**
      * Initializes the controller class.
      */
-    public static final String ACCOUNT_SID = "ACbcc7f8d34a41d899234eaee96ba4df31";
-    public static final String AUTH_TOKEN = "622adcf13aa54bd8f813bd16af9606c4";
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        try {
-
-            // String sendList[] = jTextFieldTo.getText().split(",")
-            ServiceUser su=new ServiceUser();
-            List<User> touristList=su.findTourist();
-            for(User u:touristList)
-            {
-           
-                List<User> guideList=su.findGuides(u.getCityname(),u.getDateBegin(),u.getDateEnd());
-                if(!guideList.isEmpty())
-                {
-                    
-                    su.autoMatch(u.getId_User(),guideList.get(0).getId_User());
-                    createTask();
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }    
+}    
 
     @FXML
-    private void login(ActionEvent event) {
+    private void login(ActionEvent event) throws SQLException {
        String login = user_name.getText();
        String pass = user_pass.getText();
             if(login.equals("Admin") && pass.equals("Admin"))
@@ -106,7 +83,6 @@ public class LoginController implements Initializable {
             return;
         } 
         
-        System.out.println("pass =" +pass+" login = "+ login);
 
  
                 
@@ -116,6 +92,27 @@ public class LoginController implements Initializable {
        }
        else if(etat==true)
        {
+                    // String sendList[] = jTextFieldTo.getText().split(",");
+           List<User> touristList=su.findTourist();
+            for(User u:touristList)
+            {
+            System.out.println("id : "+u.getId_User()) ;
+                List<User> guideList=su.findGuides(u.getCityname1(),u.getDateBegin(),u.getDateEnd());
+                if(!guideList.isEmpty())
+                {
+                    System.out.println("id : "+u.getId_User()+" id : "+guideList.get(0).getId_User() );
+                    su.autoMatch(u.getId_User(),guideList.get(0).getId_User());
+                    
+                   /* Twilio.init("ACbcc7f8d34a41d899234eaee96ba4df31","1fb1c8f3093f0ab01a579ba0e900f87b");
+                    Message message =   Message.creator(new PhoneNumber("+21654449381"),
+                    new PhoneNumber("+15674093244"), "\n The Guide accorded to u is "+guideList.get(0).getUser_FirstName()+" "+guideList.get(0).getUser_LastName()+ "\n 📞"+guideList.get(0).getUser_phone()+"").create();
+                */
+                }
+           } 
+            SessionManager.setId(user.getId_User());
+            SessionManager.setEmail(user.getUser_mail());
+            SessionManager.setRole(user.getRole());
+            SessionManager.setTel(user.getUser_phone());
            
            if(user.getRole().equals("Tourist"))
            {
@@ -123,10 +120,8 @@ public class LoginController implements Initializable {
                 Util.loadWindow(getClass().getResource("/cruduser/Tourist/InterfaceTourist.fxml"), "Tourist Interface", null);
            }
            else
-           if(user.getRole()=="Quide")
            {
-           //interface Quide   
-           }
+            Util.loadWindow(getClass().getResource("/cruduser/Tourist/InterfaceGuide.fxml"), "Guide Interface", null);           }
      
        }
             }
@@ -168,21 +163,5 @@ public class LoginController implements Initializable {
         }
     }
 
-protected Task createTask()
-{
-    
-Thread th = new Thread(() -> {
-    Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
-                   String messageBody = "Guide number :";
-                    String to = "+21654494381";
-                    Message message =Message.creator(
-                    new com.twilio.type.PhoneNumber(to),                //Recipient(s)
-                    new com.twilio.type.PhoneNumber("+15674093244"),    //Sender Phone No. - Find your Twilio phone number at https://www.twilio.com/console
-                    messageBody)
-                    .setMediaUrl(										//MMS, Comment out this and the next line if you don't want to attach picture to your message.
-                            Arrays.asList(URI.create("http://oracleprofessor.com/LO.jpg")))	//MMS
-                    .create();});
-return null;
-}
 
 }

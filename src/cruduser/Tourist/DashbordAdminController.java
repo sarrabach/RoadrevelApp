@@ -8,12 +8,14 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import cruduser.entities.User.ServiceUser;
 import cruduser.entities.User.User;
+import cruduser.util.Util;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
@@ -50,6 +52,10 @@ public class DashbordAdminController implements Initializable {
     private PieChart pie;
     @FXML
     private PieChart pieReport;
+    @FXML
+    private JFXButton showTourist;
+    @FXML
+    private JFXButton showGuide;
 
     /**
      * Initializes the controller class.
@@ -96,6 +102,16 @@ public class DashbordAdminController implements Initializable {
             Logger.getLogger(DashbordAdminController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }   
+
+    @FXML
+    private void showTourist(ActionEvent event) {
+        Util.loadWindow(getClass().getResource("/cruduser/Tourist/TouristList/tourist_list.fxml"), "Add New Place", null);
+    }
+
+    @FXML
+    private void showGuide(ActionEvent event) {
+         Util.loadWindow(getClass().getResource("/cruduser/Guide/GuideList/Guide_list.fxml"), "Add New Place", null);
+    }
      
     
 }

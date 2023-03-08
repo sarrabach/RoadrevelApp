@@ -103,7 +103,6 @@ public class GuideListController implements Initializable {
                         return true;
                     }
                     
-                    
                     String lowerCaseFilter = newValue.toLowerCase();
                     
                     String t=""+guide.getUser_FirstName();
@@ -119,7 +118,7 @@ public class GuideListController implements Initializable {
                     else if (guide.getLang1().toLowerCase().indexOf(lowerCaseFilter) != -1) {
                         return true; // Filter matches last name.
                     }
-                    else if (guide.getLang2().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    else if (guide.getCityname().toLowerCase().indexOf(lowerCaseFilter) != -1) {
                         return true; // Filter matches last name.
                     }
                     else

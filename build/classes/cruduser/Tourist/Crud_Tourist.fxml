@@ -7,11 +7,7 @@
    <children>
       <AnchorPane fx:id="one" focusTraversable="true" prefHeight="400.0" prefWidth="600.0">
          <children>
-            <JFXButton fx:id="Aadmin" layoutX="183.0" layoutY="25.0" onAction="#addadmin" prefHeight="67.0" prefWidth="122.0" styleClass="toolbar-button" text="Add Tourist" />
-            <JFXButton fx:id="Sadmin" layoutX="401.0" layoutY="25.0" onAction="#shadmins" prefHeight="67.0" prefWidth="122.0" styleClass="toolbar-button" text="Show Tourists" />
-            <JFXButton fx:id="Login" layoutX="34.0" layoutY="301.0" onAction="#Login" prefHeight="67.0" prefWidth="122.0" styleClass="toolbar-button" text="Login" />
-            <JFXButton fx:id="Aadmin1" layoutX="183.0" layoutY="127.0" onAction="#addguide" prefHeight="67.0" prefWidth="122.0" styleClass="toolbar-button" text="Add Guide" />
-            <JFXButton fx:id="Sadmin1" layoutX="401.0" layoutY="127.0" onAction="#shguide" prefHeight="67.0" prefWidth="122.0" styleClass="toolbar-button" text="Show Guide" />
+            <JFXButton fx:id="Login" layoutX="89.0" layoutY="86.0" onAction="#Login" prefHeight="243.0" prefWidth="393.0" styleClass="toolbar-button" text="Login" />
          </children>
       </AnchorPane>
    </children>
