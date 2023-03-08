@@ -29,8 +29,6 @@ public class InterfaceTouristController implements Initializable {
     @FXML
     private JFXButton btn_workbench22;
     @FXML
-    private JFXButton btn_workbench12;
-    @FXML
     private JFXButton btn_workbench112;
     @FXML
     private JFXButton btn_workbench1112;
